@@ -48,6 +48,31 @@ def writeFile():
 
 
 
+def add_tag():
+    note_name = notes_list.currentItem().text()
+    tag = lineText.text()
+
+    notes[note_name]["tags"].append(tag)
+    tegs_list.addItem(tag)
+    writeFile()
+
+add_Tex_ToNote_btn.clicked.connect(add_tag)
+
+def del_tag():
+    note_name = notes_list.currentItem().text()
+    tag_name = tegs_list.currentItem().text()
+
+    notes[note_name]["tags"].remove(tag_name)
+
+    tegs_list.clear()
+    tegs_list.addItems(notes[note_name]["tags"])
+    writeFile()
+an_Pin_btn.clicked.connect(del_tag)
+
+def siorch_by_tag():
+    
+
+
 def save_note():
     note_text=text.toPlainText()
     note_name = notes_list.currentItem().text()
@@ -63,6 +88,8 @@ notes  = {}
 def show_note():
     note_name = notes_list.currentItem().text()
     text.setText(notes[note_name]["text"])
+    tegs_list.clear()
+    tegs_list.addItems(notes[note_name]["tags"])
 
 notes_list.itemClicked.connect(show_note)
 
