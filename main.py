@@ -17,6 +17,50 @@ add_Tex_ToNote_btn = QPushButton("Додати нотатку до тегу")
 an_Pin_btn = QPushButton("Відкріпити нотатку")
 siorch_Note_btn = QPushButton("Пошук по тегех")
 
+
+note_Create_btn.setStyleSheet(""" 
+background-color: #fadb11
+""")
+
+note_Deleate_btn.setStyleSheet(""" 
+background-color: #fadb11
+""")
+
+note_Save_btn.setStyleSheet(""" 
+background-color: #fadb11
+""")
+
+add_Tex_ToNote_btn.setStyleSheet(""" 
+background-color: #0eaeed
+""")
+
+an_Pin_btn.setStyleSheet(""" 
+background-color: #0eaeed
+""")
+
+siorch_Note_btn.setStyleSheet(""" 
+background-color: #0eaeed
+""")
+
+text.setStyleSheet(""" 
+background-color: #0bdb1c
+""")
+
+notes_list.setStyleSheet(""" 
+background-color: #ca0bdb
+""")
+
+tegs_list.setStyleSheet(""" 
+background-color: #ed160e
+""")
+
+lineText.setStyleSheet(""" 
+background-color: #ed8c0e
+""")
+
+
+
+
 main_line = QHBoxLayout()
 line1 = QVBoxLayout()
 line2 = QVBoxLayout()
@@ -70,6 +114,27 @@ def del_tag():
 an_Pin_btn.clicked.connect(del_tag)
 
 def siorch_by_tag():
+    tag = lineText.text()
+    if(siorch_Note_btn.text()=="Siorch"):
+        filtered = {}                                                        
+        for key in notes:
+            if tag in notes[key]["tags"]:
+                print(notes[key])
+                filtered[key] = notes[key]
+        siorch_Note_btn.setText("Відмінити пошук")
+        notes_list.clear()
+        notes_list.addItems(filtered)
+        tegs_list.clear()
+        lineText.clear()
+    else:
+        siorch_Note_btn.setText("Siorch")
+        notes_list.clear()
+        notes_list.addItems(notes)
+        tegs_list.clear()
+        
+siorch_Note_btn.clicked.connect(siorch_by_tag)
+            
+        
     
 
 
