@@ -113,6 +113,17 @@ def del_tag():
     writeFile()
 an_Pin_btn.clicked.connect(del_tag)
 
+
+def dell_note():
+    note_name = notes_list.currentItem().text()
+    del notes[note_name]
+    notes_list.takeItem(notes_list.currentRow())
+    text.clear()
+    writeFile()
+note_Deleate_btn.clicked.connect(dell_note)
+
+
+
 def siorch_by_tag():
     tag = lineText.text()
     if(siorch_Note_btn.text()=="Siorch"):
