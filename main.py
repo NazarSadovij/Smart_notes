@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import QWidget, QApplication, QTextEdit, QListWidget, QPushButton, QLineEdit,  QVBoxLayout, QHBoxLayout, QInputDialog
+from PyQt5.QtWidgets import QWidget, QApplication, QTextEdit, QListWidget, QPushButton, QLineEdit,  QVBoxLayout, QHBoxLayout, QInputDialog, QMessageBox
+
 import json
 app  = QApplication([])
 window = QWidget()
@@ -58,6 +59,13 @@ lineText.setStyleSheet("""
 background-color: #ed8c0e
 """)
 
+h_line = QHBoxLayout()
+
+
+
+h_line.addWidget(note_Save_btn)
+h_line.addWidget(note_Create_btn)
+
 
 
 
@@ -68,16 +76,20 @@ line2 = QVBoxLayout()
 line1.addWidget(text)
 
 line2.addWidget(notes_list)
-line2.addWidget(note_Create_btn)
+
 line2.addWidget(note_Deleate_btn)
-line2.addWidget(note_Save_btn)
+line2.addLayout(h_line)
 
 line2.addWidget(tegs_list)
 
 line2.addWidget(lineText)
 
-line2.addWidget(add_Tex_ToNote_btn)
-line2.addWidget(an_Pin_btn)
+
+h2_line = QHBoxLayout()
+
+h2_line.addWidget(add_Tex_ToNote_btn)
+h2_line.addWidget(an_Pin_btn)
+line2.addLayout(h2_line)
 line2.addWidget(siorch_Note_btn)
 
 
@@ -85,6 +97,15 @@ line2.addWidget(siorch_Note_btn)
 main_line.addLayout(line1)
 main_line.addLayout(line2)
 window.setLayout(main_line)
+
+try:
+    with open ("notes.json", "r", encoding="utf-8") as file:
+        notes = json.load(file)
+except:
+    print("File not found")
+    
+    
+
 
 def writeFile():
     with open ("notes.json","w", encoding = "utf-8") as file:
@@ -113,17 +134,6 @@ def del_tag():
     writeFile()
 an_Pin_btn.clicked.connect(del_tag)
 
-
-def dell_note():
-    note_name = notes_list.currentItem().text()
-    del notes[note_name]
-    notes_list.takeItem(notes_list.currentRow())
-    text.clear()
-    writeFile()
-note_Deleate_btn.clicked.connect(dell_note)
-
-
-
 def siorch_by_tag():
     tag = lineText.text()
     if(siorch_Note_btn.text()=="Siorch"):
@@ -146,15 +156,25 @@ def siorch_by_tag():
 siorch_Note_btn.clicked.connect(siorch_by_tag)
             
         
-    
+def dell_note():
+    note_name = notes_list.currentItem().text()
+    del notes[note_name]
+    notes_list.takeItem(notes_list.currentRow())
+    text.clear()
+    writeFile()
+note_Deleate_btn.clicked.connect(dell_note)
+
 
 
 def save_note():
-    note_text=text.toPlainText()
-    note_name = notes_list.currentItem().text()
-    notes [note_name]["text"] = note_text
-    writeFile()
-
+    note_text=text.toPlainText() 
+    try:
+        note_name = notes_list.currentItem().text()
+        notes [note_name]["text"] = note_text
+        writeFile()
+    except:
+        msg =QMessageBox(window, text="Виберіть замітку")
+        msg.show()
 
 note_Save_btn.clicked.connect(save_note)
 
